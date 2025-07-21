@@ -1,1 +1,3 @@
-spring.application.name=module-common
+spring:
+  application:
+    name: module-common
