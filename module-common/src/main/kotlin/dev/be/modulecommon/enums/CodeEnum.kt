@@ -1,8 +1,5 @@
 package dev.be.modulecommon.enums
 
-import lombok.Getter
-
-@Getter
 enum class CodeEnum(
     val code: String,
     val message: String

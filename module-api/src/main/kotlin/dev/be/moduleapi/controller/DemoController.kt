@@ -1,12 +1,10 @@
 package dev.be.moduleapi.controller
 
 import dev.be.moduleapi.service.DemoService
-import lombok.RequiredArgsConstructor
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequiredArgsConstructor
 class DemoController(
     private val demoService: DemoService
 ) {
@@ -19,6 +17,11 @@ class DemoController(
     @GetMapping("/find")
     fun find(): String {
         return demoService.find()
+    }
+
+    @GetMapping("/exception")
+    fun exception(): String {
+        return demoService.exception()
     }
 
 }
