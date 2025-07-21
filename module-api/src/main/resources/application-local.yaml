@@ -1,3 +1,5 @@
+profile-name: local
+
 spring:
   application:
     name: module-api

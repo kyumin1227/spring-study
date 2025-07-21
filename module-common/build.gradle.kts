@@ -48,3 +48,14 @@ kotlin {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+// common module은 참조되는 모듈로 실행용인 boot 빌드를 제외
+// 기본 jar
+tasks.bootJar {
+    enabled = false
+}
+
+// xxx-plain.jar
+tasks.jar {
+    enabled = true
+}
