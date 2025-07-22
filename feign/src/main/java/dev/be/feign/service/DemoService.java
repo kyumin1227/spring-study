@@ -30,7 +30,7 @@ public class DemoService {
 
         ResponseEntity<BaseResponseInfo> response = demoFeignClient.callPost("CustomHeader", baseRequestInfo);
 
-        System.out.println("Name : " + response.getBody().getName());
+        System.out.println("Name : " + response.getBody().getName()   );
         System.out.println("Age : " + response.getBody().getAge());
         System.out.println("Header : " + response.getBody().getHeader());
         return "post";

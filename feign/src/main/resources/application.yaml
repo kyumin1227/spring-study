@@ -14,4 +14,4 @@ feign:
       demo-client:  # demoFeignClient?? ??? Client ?? ?
         connectTimeout: 1000
         readTimeout: 10000
-        loggerLebel: HEADERS  # FeignCustomLogger -> Logger.Level. logLevel ??? ??
+        loggerLevel: HEADERS  # FeignCustomLogger -> Logger.Level. logLevel ??? ??
