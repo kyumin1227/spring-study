@@ -4,3 +4,4 @@ rootProject.name = "multimodule"
 include("module-api")
 include("module-common")
 include("async")
+include("async-kotlin")
