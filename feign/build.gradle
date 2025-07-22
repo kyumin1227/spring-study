@@ -26,6 +26,7 @@ repositories {
 // 환경 변수
 ext {
 	set("springCloudVersion", "2025.0.0")
+	set("commonLangVersion", "3.18.0")
 }
 
 dependencyManagement {
@@ -43,6 +44,8 @@ dependencies {
 
 	// feign
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+
+	implementation("org.apache.commons:commons-lang3:${commonLangVersion}")
 }
 
 tasks.named('test') {
