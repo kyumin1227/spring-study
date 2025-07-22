@@ -6,7 +6,7 @@
         <include resource="logback-spring-local.xml" />
     </springProfile>
 
-    <springProfile name="!local">
-        <include resource="logback-spring-default.xml" />
+    <springProfile name="prod">
+        <include resource="logback-spring-prod.xml" />
     </springProfile>
 </configuration>
