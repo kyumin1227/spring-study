@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  datasource:
+    hikari:
+      maximum-pool-size: 4
+    url: jdbc:postgresql://localhost:5432/my_database
+    username: postgres
+    password: mysecretpassword
+    driver-class-name: org.postgresql.Driver
