@@ -13,7 +13,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -55,7 +54,7 @@ public class PostServiceTest {
         when(postEntityRepository.save(any())).thenReturn(mock(PostEntity.class));
 
         assertThatCode(() -> postService.create(title, body, userName))
-                .hasCauseInstanceOf(SnsApplicationException.class)
+                .isInstanceOf(SnsApplicationException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.USER_NOT_FOUND);
     }
 }
