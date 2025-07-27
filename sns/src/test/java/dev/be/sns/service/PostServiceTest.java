@@ -112,4 +112,52 @@ public class PostServiceTest {
                 .isInstanceOf(SnsApplicationException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_PERMISSION);
     }
+
+    @Test
+    void 포스트_삭제가_성공한_경우() {
+        String userName = "userName";
+        Integer postId = 1;
+
+        PostEntity postEntity = PostEntityFixture.get(userName, postId, 1);
+        UserEntity userEntity = postEntity.getUser();
+
+        when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(userEntity));
+        when(postEntityRepository.findById(postId)).thenReturn(Optional.of(postEntity));
+
+        assertThatCode(() -> postService.delete(userName, postId))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void 포스트_삭제시_포스트가_존재하지_않는_경우() {
+        String userName = "userName";
+        String password = "password";
+        Integer userId = 1;
+        Integer postId = 1;
+
+        UserEntity userEntity = UserEntityFixture.get(userName, password, userId);
+
+        when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(userEntity));
+        when(postEntityRepository.findById(postId)).thenReturn(Optional.empty());
+
+        assertThatCode(() -> postService.delete(userName, postId))
+                .isInstanceOf(SnsApplicationException.class)
+                .hasFieldOrPropertyWithValue("errorCode", ErrorCode.POST_NOT_FOUND);
+    }
+
+    @Test
+    void 포스트_삭제시_권한이_없는_경우() {
+        String userName = "userName";
+        Integer postId = 1;
+
+        PostEntity postEntity = PostEntityFixture.get(userName, postId, 1);
+        UserEntity writer = UserEntityFixture.get("writer", "password", 2);
+
+        when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(writer));
+        when(postEntityRepository.findById(postId)).thenReturn(Optional.of(postEntity));
+
+        assertThatCode(() -> postService.delete(userName, postId))
+                .isInstanceOf(SnsApplicationException.class)
+                .hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_PERMISSION);
+    }
 }
