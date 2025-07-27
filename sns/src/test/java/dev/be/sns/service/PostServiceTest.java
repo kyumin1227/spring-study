@@ -2,6 +2,8 @@ package dev.be.sns.service;
 
 import dev.be.sns.exception.ErrorCode;
 import dev.be.sns.exception.SnsApplicationException;
+import dev.be.sns.fixture.PostEntityFixture;
+import dev.be.sns.fixture.UserEntityFixture;
 import dev.be.sns.model.entity.PostEntity;
 import dev.be.sns.model.entity.UserEntity;
 import dev.be.sns.repository.PostEntityRepository;
@@ -44,8 +46,7 @@ public class PostServiceTest {
     }
 
     @Test
-    void
-    포스트_작성시_요청한_유저가_존재하지_않는_경우() {
+    void 포스트_작성시_요청한_유저가_존재하지_않는_경우() {
         String title = "title";
         String body = "body";
         String userName = "userName";
@@ -56,5 +57,58 @@ public class PostServiceTest {
         assertThatCode(() -> postService.create(title, body, userName))
                 .isInstanceOf(SnsApplicationException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.USER_NOT_FOUND);
+    }
+
+    @Test
+    void 포스트_수정이_성공한_경우() {
+        String title = "title";
+        String body = "body";
+        String userName = "userName";
+        Integer postId = 1;
+
+        PostEntity postEntity = PostEntityFixture.get(userName, postId, 1);
+        UserEntity userEntity = postEntity.getUser();
+
+        when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(userEntity));
+        when(postEntityRepository.findById(postId)).thenReturn(Optional.of(postEntity));
+
+        assertThatCode(() -> postService.modify(title, body, userName, postId))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void 포스트_수정시_포스트가_존재하지_않는_경우() {
+        String title = "title";
+        String body = "body";
+        String userName = "userName";
+        Integer postId = 1;
+
+        PostEntity postEntity = PostEntityFixture.get(userName, postId, 1);
+        UserEntity userEntity = postEntity.getUser();
+
+        when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(userEntity));
+        when(postEntityRepository.findById(postId)).thenReturn(Optional.empty());
+
+        assertThatCode(() -> postService.modify(title, body, userName, postId))
+                .isInstanceOf(SnsApplicationException.class)
+                .hasFieldOrPropertyWithValue("errorCode", ErrorCode.POST_NOT_FOUND);
+    }
+
+    @Test
+    void 포스트_수정시_권한이_없는_경우() {
+        String title = "title";
+        String body = "body";
+        String userName = "userName";
+        Integer postId = 1;
+
+        PostEntity postEntity = PostEntityFixture.get(userName, postId, 1);
+        UserEntity writer = UserEntityFixture.get("writer", "password", 2);
+
+        when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(writer));
+        when(postEntityRepository.findById(postId)).thenReturn(Optional.of(postEntity));
+
+        assertThatCode(() -> postService.modify(title, body, userName, postId))
+                .isInstanceOf(SnsApplicationException.class)
+                .hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_PERMISSION);
     }
 }

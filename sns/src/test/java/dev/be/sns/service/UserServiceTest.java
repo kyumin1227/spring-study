@@ -33,7 +33,7 @@ public class UserServiceTest {
     void 회원가입이_정상적으로_동작하는_경우() {
         String userName = "userName";
         String password = "password";
-        UserEntity fixture = UserEntityFixture.get(userName, password);
+        UserEntity fixture = UserEntityFixture.get(userName, password, 1);
 
         when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.empty());
         when(encoder.encode(password)).thenReturn("encrypt_password");
@@ -46,7 +46,7 @@ public class UserServiceTest {
     void 회원가입시_userName으로_회원가입한_유저가_이미_있는_경우() {
         String userName = "userName";
         String password = "password";
-        UserEntity fixture = UserEntityFixture.get(userName, password);
+        UserEntity fixture = UserEntityFixture.get(userName, password, 1);
 
         when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(fixture));
         when(encoder.encode(password)).thenReturn("encrypt_password");
@@ -60,7 +60,7 @@ public class UserServiceTest {
     void 로그인이_정상적으로_동작하는_경우() {
         String userName = "userName";
         String password = "password";
-        UserEntity fixture = UserEntityFixture.get(userName, password);
+        UserEntity fixture = UserEntityFixture.get(userName, password, 1);
 
         //        mocking
         when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(fixture));
@@ -73,7 +73,7 @@ public class UserServiceTest {
     void 로그인시_userName으로_회원가입한_유저가_없는_경우() {
         String userName = "userName";
         String password = "password";
-        UserEntity fixture = UserEntityFixture.get(userName, password);
+        UserEntity fixture = UserEntityFixture.get(userName, password, 1);
 
         when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.empty());
 
@@ -87,7 +87,7 @@ public class UserServiceTest {
         String userName = "userName";
         String password = "password";
         String wrongPassword = "wrongPassword";
-        UserEntity fixture = UserEntityFixture.get(userName, password);
+        UserEntity fixture = UserEntityFixture.get(userName, password, 1);
 
         when(userEntityRepository.findByUserName(userName)).thenReturn(Optional.of(fixture));
 
