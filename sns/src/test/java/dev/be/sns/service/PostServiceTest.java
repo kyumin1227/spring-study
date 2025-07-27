@@ -11,12 +11,15 @@ import dev.be.sns.repository.UserEntityRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -160,4 +163,27 @@ public class PostServiceTest {
                 .isInstanceOf(SnsApplicationException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_PERMISSION);
     }
+
+    @Test
+    void 피드목록_요청이_성공한_경우() {
+        Pageable pageable = mock(Pageable.class);
+
+        when(postEntityRepository.findAll(pageable)).thenReturn(Page.empty());
+
+        assertThatCode(() -> postService.list(pageable))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void 내피드목록_요청이_성공한_경우() {
+        Pageable pageable = mock(Pageable.class);
+        UserEntity userEntity = mock(UserEntity.class);
+
+        when(userEntityRepository.findByUserName(any())).thenReturn(Optional.of(userEntity));
+        when(postEntityRepository.findAllByUser(any(), eq(pageable))).thenReturn(Page.empty());
+
+        assertThatCode(() -> postService.my("", pageable))
+                .doesNotThrowAnyException();
+    }
+
 }
