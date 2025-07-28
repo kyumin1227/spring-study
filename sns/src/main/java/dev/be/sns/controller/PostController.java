@@ -28,7 +28,7 @@ public class PostController {
         return Response.success();
     }
 
-    @PostMapping("{postId}")
+    @PutMapping("{postId}")
     public Response<PostResponse> modify(@PathVariable Integer postId,
                                          @RequestBody PostModifyRequest request,
                                          Authentication authentication) {
