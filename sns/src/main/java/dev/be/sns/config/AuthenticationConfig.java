@@ -30,7 +30,7 @@ public class AuthenticationConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/*/users/join", "/api/*/users/login", "/api/v1/posts").permitAll()
+                        .requestMatchers("/api/*/users/join", "/api/*/users/login").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
