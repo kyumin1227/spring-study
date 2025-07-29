@@ -1,6 +1,7 @@
 package dev.be.sns.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.be.sns.controller.request.PostCommentRequest;
 import dev.be.sns.controller.request.PostCreateRequest;
 import dev.be.sns.controller.request.PostModifyRequest;
 import dev.be.sns.exception.ErrorCode;
@@ -247,6 +248,41 @@ public class PostControllerTest {
 
         mockMvc.perform(post("/api/v1/posts/1/likes")
                         .contentType(MediaType.APPLICATION_JSON)
+                ).andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser
+    void 댓글_기능() throws Exception {
+
+        mockMvc.perform(post("/api/v1/posts/1/comments")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new PostCommentRequest("comment")))
+                ).andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithAnonymousUser
+    void 댓글_작성시_로그인_하지_않은_경우() throws Exception {
+
+        mockMvc.perform(post("/api/v1/posts/1/comments")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new PostCommentRequest("comment")))
+                ).andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser
+    void 댓글_작성시_게시물이_없는_경우() throws Exception {
+
+        doThrow(new SnsApplicationException(ErrorCode.POST_NOT_FOUND)).when(postService).comment(any(), any(), any());
+
+        mockMvc.perform(post("/api/v1/posts/1/comments")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new PostCommentRequest("comment")))
                 ).andDo(print())
                 .andExpect(status().isNotFound());
     }
