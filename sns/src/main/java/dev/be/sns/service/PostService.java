@@ -65,6 +65,8 @@ public class PostService {
         }
 
         postEntityRepository.delete(postEntity);
+        likeEntityRepository.deleteAllByPost(postEntity);
+        commentEntityRepository.deleteAllByPost(postEntity);
     }
 
     public Page<Post> list(Pageable pageable) {
@@ -95,7 +97,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public int likeCount(Integer postId) {
+    public Long likeCount(Integer postId) {
         PostEntity postEntity = getPostEntity(postId);
 
         //        return likeEntityRepository.findAllByPost(postEntity).size();
