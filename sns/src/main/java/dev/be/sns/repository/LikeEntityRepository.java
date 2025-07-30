@@ -21,7 +21,7 @@ public interface LikeEntityRepository extends JpaRepository<LikeEntity, Integer>
     List<LikeEntity> findAllByPost(PostEntity post);
 
 //    경량 쿼리
-    @Query(value = "SELECT COUNT(*) FROM LikeEntity entity WHERE entity.post =: post")
+    @Query(value = "SELECT COUNT(*) FROM LikeEntity entity WHERE entity.post = :post")
     Integer countByPost(@Param("post") PostEntity post);
 
 }
