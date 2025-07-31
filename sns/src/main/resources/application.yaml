@@ -15,6 +15,10 @@ spring:
     password: mysecretpassword
     driver-class-name: org.postgresql.Driver
 
+  data:
+    redis:
+      url: redis://localhost:6379
+
 jwt:
   secret-key: aB3xK7mN9qR5sT8uV2wY4zA6cE1fH0jL
   token:
